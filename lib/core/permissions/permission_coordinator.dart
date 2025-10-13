@@ -6,16 +6,19 @@ import 'package:permission_handler/permission_handler.dart';
 enum AppPermission { bluetooth, location, notifications }
 
 class PermissionCoordinator extends ChangeNotifier {
+  PermissionCoordinator() {
+    _statusMap[AppPermission.bluetooth] = PermissionStatus.denied;
+  }
+
   final Map<AppPermission, PermissionStatus> _statusMap = {
     AppPermission.bluetooth: PermissionStatus.denied,
-    AppPermission.location: PermissionStatus.denied,
-    AppPermission.notifications: PermissionStatus.denied,
   };
 
   Map<AppPermission, PermissionStatus> get statuses => Map.unmodifiable(_statusMap);
 
-  bool get allCriticalGranted =>
-      _isGranted(AppPermission.bluetooth) && _isGranted(AppPermission.location);
+  bool get _skipNativePermissionFlow => Platform.isMacOS || Platform.isIOS;
+
+  bool get allCriticalGranted => _isGranted(AppPermission.bluetooth);
 
   bool _isGranted(AppPermission permission) {
     final status = _statusMap[permission];
@@ -23,25 +26,38 @@ class PermissionCoordinator extends ChangeNotifier {
   }
 
   Future<void> loadCurrentStatuses() async {
-    for (final permission in AppPermission.values) {
-      _statusMap[permission] = await _queryStatus(permission);
+    if (_skipNativePermissionFlow) {
+      _statusMap[AppPermission.bluetooth] = PermissionStatus.granted;
+      notifyListeners();
+      return;
     }
+
+    _statusMap[AppPermission.bluetooth] = await _queryStatus(AppPermission.bluetooth);
     notifyListeners();
   }
 
   Future<bool> ensureCorePermissions() async {
-    await loadCurrentStatuses();
-    bool grantedAll = true;
-    for (final permission in AppPermission.values) {
-      if (!_isGranted(permission)) {
-        final status = await request(permission);
-        grantedAll &= status == PermissionStatus.granted || status == PermissionStatus.limited;
-      }
+    if (_skipNativePermissionFlow) {
+      _statusMap[AppPermission.bluetooth] = PermissionStatus.granted;
+      notifyListeners();
+      return true;
     }
-    return grantedAll;
+
+    await loadCurrentStatuses();
+    if (!_isGranted(AppPermission.bluetooth)) {
+      final status = await request(AppPermission.bluetooth);
+      return status == PermissionStatus.granted || status == PermissionStatus.limited;
+    }
+    return true;
   }
 
   Future<PermissionStatus> request(AppPermission permission) async {
+    if (_skipNativePermissionFlow) {
+      _statusMap[AppPermission.bluetooth] = PermissionStatus.granted;
+      notifyListeners();
+      return PermissionStatus.granted;
+    }
+
     PermissionStatus worst = PermissionStatus.granted;
     for (final handlerPermission in _resolve(permission)) {
       final status = await handlerPermission.request();
@@ -101,4 +117,5 @@ class PermissionCoordinator extends ChangeNotifier {
         return const [Permission.notification];
     }
   }
+
 }

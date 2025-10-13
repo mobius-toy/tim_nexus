@@ -21,9 +21,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PermissionCoordinator>().loadCurrentStatuses();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   context.read<PermissionCoordinator>().loadCurrentStatuses();
+    // });
   }
 
   Future<void> _handleGetStarted() async {
@@ -43,9 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.black.withValues(alpha: 0.85),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (context) {
         final statuses = context.watch<PermissionCoordinator>().statuses;
         return Padding(
@@ -54,38 +52,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '需要权限协助',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              Text('需要权限协助', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 12),
-              Text(
-                '请在系统设置中允许以下权限，以便 TIM Nexus 正常工作。',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text('请在系统设置中允许以下权限，以便 TIM Nexus 正常工作。', style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 16),
               ...statuses.entries.map(
                 (entry) => ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: Icon(
-                    _iconFor(entry.key),
-                    color: _colorFor(entry.value),
-                  ),
+                  leading: Icon(_iconFor(entry.key), color: _colorFor(entry.value)),
                   title: Text(_labelFor(entry.key)),
                   subtitle: Text(_statusLabel(entry.value)),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.open_in_new),
-                    onPressed: openAppSettings,
-                  ),
+                  trailing: IconButton(icon: const Icon(Icons.open_in_new), onPressed: openAppSettings),
                 ),
               ),
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: Navigator.of(context).pop,
-                  child: const Text('稍后再说'),
-                ),
+                child: OutlinedButton(onPressed: Navigator.of(context).pop, child: const Text('稍后再说')),
               ),
             ],
           ),
@@ -108,26 +91,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 Text('TIM Nexus', style: textTheme.displayMedium),
                 const SizedBox(height: 12),
-                Text(
-                  '连接设备、雕刻波形、实时观测数据 —— 一站式的 TIM 集成体验。',
-                  style: textTheme.bodyLarge?.copyWith(color: Colors.white70),
-                ),
+                Text('连接设备、雕刻波形、实时观测数据', style: textTheme.bodyLarge?.copyWith(color: Colors.white70)),
                 const SizedBox(height: 32),
                 _FeatureTile(
                   icon: Icons.bluetooth_searching,
                   title: '即时扫描',
                   description: '捕捉附近的 TIM 设备，展示信号强度、电量与固件版本。',
                 ),
-                _FeatureTile(
-                  icon: Icons.waves,
-                  title: '波形工作台',
-                  description: '拖拽节点生成 PWM 曲线，实时推送至设备，打造专属震动体验。',
-                ),
-                _FeatureTile(
-                  icon: Icons.insights,
-                  title: '实时遥测',
-                  description: '电池、RSSI、指令日志全量可视化，一目了然。',
-                ),
+                _FeatureTile(icon: Icons.waves, title: '波形工作台', description: '拖拽节点生成 PWM 曲线，实时推送至设备，打造专属震动体验。'),
+                _FeatureTile(icon: Icons.insights, title: '实时遥测', description: '电池、RSSI、指令日志全量可视化，一目了然。'),
                 const Spacer(),
                 Card(
                   margin: EdgeInsets.zero,
@@ -145,9 +117,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               Text(_labelFor(entry.key)),
                               Text(
                                 _statusLabel(entry.value),
-                                style: textTheme.labelLarge?.copyWith(
-                                  color: _colorFor(entry.value),
-                                ),
+                                style: textTheme.labelLarge?.copyWith(color: _colorFor(entry.value)),
                               ),
                             ],
                           ),
@@ -162,11 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: ElevatedButton(
                     onPressed: _requesting ? null : _handleGetStarted,
                     child: _requesting
-                        ? const SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
+                        ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2))
                         : const Text('启动体验'),
                   ),
                 ),
@@ -229,11 +195,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _FeatureTile extends StatelessWidget {
-  const _FeatureTile({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
+  const _FeatureTile({required this.icon, required this.title, required this.description});
 
   final IconData icon;
   final String title;
@@ -252,9 +214,7 @@ class _FeatureTile extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(
-                colors: [Color(0x3300F5C3), Color(0x5500F5C3)],
-              ),
+              gradient: const LinearGradient(colors: [Color(0x3300F5C3), Color(0x5500F5C3)]),
             ),
             child: Icon(icon, color: Colors.white),
           ),
@@ -265,10 +225,7 @@ class _FeatureTile extends StatelessWidget {
               children: [
                 Text(title, style: textTheme.titleLarge),
                 const SizedBox(height: 6),
-                Text(
-                  description,
-                  style: textTheme.bodyMedium?.copyWith(color: Colors.white70),
-                ),
+                Text(description, style: textTheme.bodyMedium?.copyWith(color: Colors.white70)),
               ],
             ),
           ),
