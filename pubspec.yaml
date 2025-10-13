@@ -41,10 +41,6 @@ dependencies:
       url: https://github.com/mobius-toy/tim.git
       ref: v0.0.2
 
-dependency_overrides:
-  tim:
-    path: ../tim
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

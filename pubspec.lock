@@ -392,9 +392,11 @@ packages:
   tim:
     dependency: "direct main"
     description:
-      path: "../tim"
-      relative: true
-    source: path
+      path: "."
+      ref: "v0.0.2"
+      resolved-ref: "40f82d41e5cbb8003f0e0e356e19c0a3bf63da28"
+      url: "https://github.com/mobius-toy/tim.git"
+    source: git
     version: "0.0.2"
   vector_math:
     dependency: transitive
