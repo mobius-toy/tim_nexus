@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 enum AppPermission { bluetooth, location, notifications }
 
@@ -10,13 +11,24 @@ class PermissionCoordinator extends ChangeNotifier {
     _statusMap[AppPermission.bluetooth] = PermissionStatus.denied;
   }
 
-  final Map<AppPermission, PermissionStatus> _statusMap = {
-    AppPermission.bluetooth: PermissionStatus.denied,
-  };
+  final Map<AppPermission, PermissionStatus> _statusMap = {AppPermission.bluetooth: PermissionStatus.denied};
 
   Map<AppPermission, PermissionStatus> get statuses => Map.unmodifiable(_statusMap);
 
   bool get _skipNativePermissionFlow => Platform.isMacOS || Platform.isIOS;
+
+  // 检查Android版本是否支持新的蓝牙权限 (API 31+)
+  Future<bool> _isAndroid12OrHigher() async {
+    if (!Platform.isAndroid) return false;
+    try {
+      final deviceInfo = DeviceInfoPlugin();
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.version.sdkInt >= 31; // Android 12 (API 31)
+    } catch (e) {
+      // 如果获取失败，默认使用旧权限
+      return false;
+    }
+  }
 
   bool get allCriticalGranted => _isGranted(AppPermission.bluetooth);
 
@@ -59,7 +71,7 @@ class PermissionCoordinator extends ChangeNotifier {
     }
 
     PermissionStatus worst = PermissionStatus.granted;
-    for (final handlerPermission in _resolve(permission)) {
+    for (final handlerPermission in await _resolve(permission)) {
       final status = await handlerPermission.request();
       if (status.isPermanentlyDenied) {
         worst = PermissionStatus.permanentlyDenied;
@@ -80,7 +92,7 @@ class PermissionCoordinator extends ChangeNotifier {
 
   Future<PermissionStatus> _queryStatus(AppPermission permission) async {
     PermissionStatus worst = PermissionStatus.granted;
-    for (final handlerPermission in _resolve(permission)) {
+    for (final handlerPermission in await _resolve(permission)) {
       final status = await handlerPermission.status;
       if (status.isPermanentlyDenied) {
         return PermissionStatus.permanentlyDenied;
@@ -94,15 +106,20 @@ class PermissionCoordinator extends ChangeNotifier {
     return worst;
   }
 
-  List<Permission> _resolve(AppPermission permission) {
+  Future<List<Permission>> _resolve(AppPermission permission) async {
     switch (permission) {
       case AppPermission.bluetooth:
         if (Platform.isAndroid) {
-          return const [
-            Permission.bluetoothScan,
-            Permission.bluetoothConnect,
-            Permission.bluetoothAdvertise,
-          ];
+          final isAndroid12OrHigher = await _isAndroid12OrHigher();
+          if (isAndroid12OrHigher) {
+            // Android 12+ (API 31+) 使用新的蓝牙权限
+            return const [Permission.bluetoothScan, Permission.bluetoothConnect];
+          } else {
+            // Android 11 及以下需要位置权限来扫描蓝牙设备
+            return [Permission.bluetooth, Permission.locationWhenInUse];
+          }
+        } else if (Platform.isIOS) {
+          return const [Permission.bluetooth];
         }
         return const [Permission.bluetooth];
       case AppPermission.location:
@@ -117,5 +134,4 @@ class PermissionCoordinator extends ChangeNotifier {
         return const [Permission.notification];
     }
   }
-
 }

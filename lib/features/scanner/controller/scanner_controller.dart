@@ -54,7 +54,7 @@ class ScannerController extends ChangeNotifier {
     try {
       await _gateway.scanDevices(
         timeout: const Duration(seconds: 12),
-        withNames: const ['GOSH', 'MonsterPub', 'YUMETA', 'MOBIUS'],
+        withNames: const ['GOSH', 'MOBIUS'],
         onFound: (devices) {
           _devices
             ..clear()
