@@ -167,13 +167,11 @@ class DeviceSessionController extends ChangeNotifier {
     _logSub?.cancel();
     _logSub = _gateway.logs.listen((event) {
       if (_disposed) return;
-      if (event.contains(deviceId)) {
-        _logs.insert(0, '${DateTime.now().toIso8601String()}  $event');
-        if (_logs.length > 100) {
-          _logs.removeRange(100, _logs.length);
-        }
-        notifyListeners();
+      _logs.insert(0, '${DateTime.now().toIso8601String()}  $event');
+      if (_logs.length > 100) {
+        _logs.removeRange(100, _logs.length);
       }
+      notifyListeners();
     });
   }
 

@@ -57,8 +57,8 @@ class _DeviceSessionView extends StatelessWidget {
 
     return AmbientBackground(
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -70,7 +70,8 @@ class _DeviceSessionView extends StatelessWidget {
                 _MotorControlCard(controller: controller),
                 const SizedBox(height: 16),
               ],
-              Expanded(
+              SizedBox(
+                height: 300, // 固定日志区域高度
                 child: Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -112,11 +113,7 @@ class _DeviceSessionView extends StatelessWidget {
 }
 
 class _SessionHeader extends StatelessWidget {
-  const _SessionHeader({
-    required this.status,
-    required this.device,
-    this.error,
-  });
+  const _SessionHeader({required this.status, required this.device, this.error});
 
   final DeviceSessionStatus status;
   final TimDevice? device;
@@ -132,18 +129,18 @@ class _SessionHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
                     Text(device?.name.isNotEmpty == true ? device!.name : '未知设备', style: textTheme.headlineSmall),
-                    const SizedBox(height: 8),
-                    Text(device?.id ?? '设备未连接', style: textTheme.bodyMedium?.copyWith(color: Colors.white54)),
+                    Spacer(),
+                    _StatusChip(status: status),
                   ],
                 ),
-                _StatusChip(status: status),
+                const SizedBox(height: 8),
+                Text(device?.id ?? '设备未连接', style: textTheme.bodyMedium?.copyWith(color: Colors.white54)),
               ],
             ),
             const SizedBox(height: 12),
@@ -241,18 +238,13 @@ class _MotorControlCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('马达控制', style: textTheme.titleLarge),
-                Text(
-                  isConnected ? '实时推送至设备' : '连接后可用',
-                  style: textTheme.bodySmall?.copyWith(color: Colors.white54),
-                ),
+                Text(isConnected ? '实时推送至设备' : '连接后可用', style: textTheme.bodySmall?.copyWith(color: Colors.white54)),
               ],
             ),
             const SizedBox(height: 16),
             Slider(
               value: controller.motorIntensity,
-              onChanged: isConnected
-                  ? (value) => context.read<DeviceSessionController>().playMotor(value)
-                  : null,
+              onChanged: isConnected ? (value) => context.read<DeviceSessionController>().playMotor(value) : null,
               min: 0,
               max: 1,
               divisions: 20,
@@ -308,10 +300,7 @@ class _MetricBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.06), borderRadius: BorderRadius.circular(16)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -370,10 +359,7 @@ class _StatusChip extends StatelessWidget {
         color: _color.withValues(alpha: 0.16),
         border: Border.all(color: _color.withValues(alpha: 0.5)),
       ),
-      child: Text(
-        _label,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
-      ),
+      child: Text(_label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white)),
     );
   }
 }
@@ -393,10 +379,7 @@ class _MissingDeviceView extends StatelessWidget {
             const SizedBox(height: 16),
             Text('未指定设备', style: textTheme.titleLarge),
             const SizedBox(height: 8),
-            Text(
-              '请从扫描页面选择目标设备。',
-              style: textTheme.bodyMedium?.copyWith(color: Colors.white54),
-            ),
+            Text('请从扫描页面选择目标设备。', style: textTheme.bodyMedium?.copyWith(color: Colors.white54)),
             const SizedBox(height: 16),
             OutlinedButton.icon(
               onPressed: () => Navigator.of(context).pop(),
