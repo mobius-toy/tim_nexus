@@ -83,6 +83,9 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/icon/icon.png"
   min_sdk_android: 21
+  # Android 12+ 自适应图标支持
+  adaptive_icon_background: "#1E88E5"  # 蓝色背景
+  adaptive_icon_foreground: "assets/icon/icon.png"  # 使用原图标作为前景
   web:
     generate: true
     image_path: "assets/icon/icon.png"
