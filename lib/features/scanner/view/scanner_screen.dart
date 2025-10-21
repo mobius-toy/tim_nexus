@@ -35,13 +35,6 @@ class _ScannerView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('设备控制中心'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.data_thresholding),
-            onPressed: () => Navigator.of(context).pushNamed(AppRouter.waveEditorRoute),
-            tooltip: '波形工作台',
-          ),
-        ],
       ),
       body: AmbientBackground(
         child: SafeArea(

@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static const Color _bgPrimary = Color(0xFF070B1A);
-  static const Color _bgSecondary = Color(0xFF0E1425);
-  static const Color _neonMint = Color(0xFF00F5C3);
-  static const Color _deepPurple = Color(0xFF6C5CE7);
-  static const Color _accentBlue = Color(0xFF367BFF);
+  // 与 tim_nexus web 完全一致的深色主题配色 - 基于 OKLCH 颜色空间
+  static const Color _background = Color(0xFF252525); // oklch(0.145 0 0) - 主背景
+  static const Color _foreground = Color(0xFFFBFBFB); // oklch(0.985 0 0) - 主要文本
+  static const Color _card = Color(0xFF343434); // oklch(0.205 0 0) - 卡片背景
+  static const Color _cardForeground = Color(0xFFFBFBFB); // oklch(0.985 0 0) - 卡片文本
+  static const Color _secondary = Color(0xFF444444); // oklch(0.269 0 0) - 次要背景
+  static const Color _secondaryForeground = Color(0xFFFBFBFB); // oklch(0.985 0 0) - 次要文本
+  static const Color _mutedForeground = Color(0xFFB5B5B5); // oklch(0.708 0 0) - 静音文本
+  static const Color _accent = Color(0xFF444444); // oklch(0.269 0 0) - 强调背景
+  static const Color _accentForeground = Color(0xFFFBFBFB); // oklch(0.985 0 0) - 强调文本
+  static const Color _border = Color(0x1AFFFFFF); // oklch(1 0 0 / 10%) - 边框
+  static const Color _input = Color(0x26FFFFFF); // oklch(1 0 0 / 15%) - 输入框
+  static const Color _ring = Color(0xFF8E8E8E); // oklch(0.556 0 0) - 焦点环
+  static const Color _primary = Color(0xFFEBEBEB); // oklch(0.922 0 0) - 主要颜色
+  static const Color _primaryForeground = Color(0xFF343434); // oklch(0.205 0 0) - 主要颜色前景
+  static const Color _destructive = Color(0xFFE57373); // oklch(0.704 0.191 22.216) - 破坏性颜色
 
   static ThemeData dark() {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: _neonMint,
+      seedColor: _primary,
       brightness: Brightness.dark,
-      primary: _neonMint,
-      secondary: _accentBlue,
-      surface: _bgSecondary,
-      onPrimary: Colors.black,
-      onSecondary: Colors.white,
-      onSurface: Colors.white,
+      primary: _primary,
+      secondary: _secondary,
+      surface: _card,
+      background: _background,
+      onPrimary: _primaryForeground,
+      onSecondary: _secondaryForeground,
+      onSurface: _cardForeground,
+      onBackground: _foreground,
+      error: _destructive,
     );
 
     final textTheme = Typography.whiteMountainView.copyWith(
@@ -24,81 +38,96 @@ class AppTheme {
         fontSize: 52,
         fontWeight: FontWeight.w600,
         letterSpacing: -1.2,
+        color: _foreground,
       ),
       displayMedium: const TextStyle(
         fontSize: 40,
         fontWeight: FontWeight.w600,
         letterSpacing: -0.8,
+        color: _foreground,
       ),
       headlineSmall: const TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.2,
+        color: _foreground,
       ),
       titleLarge: const TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.1,
+        color: _foreground,
       ),
       bodyLarge: const TextStyle(
         fontSize: 16,
         height: 1.4,
         letterSpacing: 0.15,
+        color: _foreground,
       ),
       bodyMedium: const TextStyle(
         fontSize: 14,
         height: 1.4,
+        color: _mutedForeground,
       ),
       labelLarge: const TextStyle(
         fontSize: 14,
         letterSpacing: 0.2,
         fontWeight: FontWeight.w500,
-        color: Colors.white,
+        color: _foreground,
       ),
     );
 
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: _bgPrimary,
+      scaffoldBackgroundColor: _background,
       colorScheme: colorScheme,
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.black.withValues(alpha: 0.2),
+        backgroundColor: _card,
         elevation: 0,
-        titleTextStyle: textTheme.titleLarge?.copyWith(color: Colors.white),
+        titleTextStyle: textTheme.titleLarge?.copyWith(color: _foreground),
         centerTitle: false,
-        foregroundColor: Colors.white,
+        foregroundColor: _foreground,
+        surfaceTintColor: Colors.transparent,
       ),
       cardTheme: CardThemeData(
-        color: _bgSecondary.withValues(alpha: 0.9),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        elevation: 4,
-        margin: const EdgeInsets.all(12),
+        color: _card,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        elevation: 0,
+        margin: const EdgeInsets.all(8),
+        surfaceTintColor: Colors.transparent,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withValues(alpha: 0.04),
+        fillColor: _input,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: _border),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: _border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: _neonMint, width: 1.5),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: _ring, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        labelStyle: const TextStyle(color: Colors.white70),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        labelStyle: const TextStyle(color: _mutedForeground),
+        hintStyle: const TextStyle(color: _mutedForeground),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          foregroundColor: Colors.black,
-          backgroundColor: _neonMint,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          foregroundColor: _accentForeground,
+          backgroundColor: _accent,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
           textStyle: const TextStyle(
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.4,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.2,
           ),
         ),
       ),
@@ -108,19 +137,70 @@ class AppTheme {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0x22FFFFFF),
-              Color(0x0820FFE6),
+              Color(0x0AFFFFFF),
+              Color(0x05FFFFFF),
             ],
           ),
           primaryGlow: RadialGradient(
             radius: 0.8,
             colors: [
-              Color(0x3300F5C3),
-              Color(0x0000F5C3),
+              Color(0x1A8E8E8E),
+              Color(0x008E8E8E),
             ],
           ),
         ),
       ],
+      // 添加更多主题配置以完善深色主题
+      dividerTheme: const DividerThemeData(
+        color: Color(0x1AFFFFFF),
+        thickness: 1,
+      ),
+      iconTheme: const IconThemeData(
+        color: _foreground,
+        size: 24,
+      ),
+      listTileTheme: const ListTileThemeData(
+        textColor: _foreground,
+        iconColor: _foreground,
+        tileColor: Colors.transparent,
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return _foreground;
+          }
+          return _mutedForeground;
+        }),
+        trackColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return _accent;
+          }
+          return _secondary;
+        }),
+      ),
+      // 添加 popover 主题配置
+      popupMenuTheme: const PopupMenuThemeData(
+        color: _card,
+        textStyle: TextStyle(color: _foreground),
+      ),
+      // 添加 dialog 主题配置
+      dialogTheme: const DialogThemeData(
+        backgroundColor: _card,
+        titleTextStyle: TextStyle(
+          color: _foreground,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        contentTextStyle: TextStyle(
+          color: _foreground,
+          fontSize: 16,
+        ),
+      ),
+      // 添加 bottom sheet 主题配置
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: _card,
+        modalBackgroundColor: _card,
+      ),
     );
   }
 
@@ -128,11 +208,9 @@ class AppTheme {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      _bgPrimary,
-      Color(0xFF02050F),
-      _deepPurple,
+      _background,
+      _background,
     ],
-    stops: [0.0, 0.6, 1.0],
   );
 }
 

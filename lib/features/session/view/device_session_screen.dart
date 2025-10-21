@@ -29,7 +29,10 @@ class DeviceSessionScreen extends StatelessWidget {
           IconButton(
             tooltip: '波形工作台',
             icon: const Icon(Icons.waves),
-            onPressed: () => Navigator.of(context).pushNamed(WaveEditorScreen.routeName),
+            onPressed: () => Navigator.of(context).pushNamed(
+              WaveEditorScreen.routeName,
+              arguments: deviceId,
+            ),
           ),
         ],
       ),

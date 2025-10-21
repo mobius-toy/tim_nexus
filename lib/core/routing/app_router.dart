@@ -26,7 +26,8 @@ class AppRouter {
           ),
         );
       case WaveEditorScreen.routeName:
-        return _build(settings, const WaveEditorScreen());
+        final deviceId = settings.arguments as String?;
+        return _build(settings, WaveEditorScreen(deviceId: deviceId));
       default:
         return _build(
           settings,
@@ -37,9 +38,8 @@ class AppRouter {
     }
   }
 
-  static MaterialPageRoute<dynamic> _build(RouteSettings settings, Widget child) =>
-      MaterialPageRoute<dynamic>(
-        settings: settings,
-        builder: (_) => child,
-      );
+  static MaterialPageRoute<dynamic> _build(RouteSettings settings, Widget child) => MaterialPageRoute<dynamic>(
+    settings: settings,
+    builder: (_) => child,
+  );
 }

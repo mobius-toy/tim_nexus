@@ -19,6 +19,9 @@
     android:name="android.permission.BLUETOOTH_ADMIN"
     android:maxSdkVersion="30" />
     
+    <!-- Internet permission for WebView -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
         android:label="tim_nexus"
         android:name="${applicationName}"

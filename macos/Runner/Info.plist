@@ -32,5 +32,14 @@
 	<string>此应用需要蓝牙权限来连接和控制设备</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>此应用需要蓝牙权限来连接和控制设备</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

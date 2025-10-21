@@ -60,9 +60,8 @@ class DeviceSessionController extends ChangeNotifier {
 
     try {
       await _gateway.ensureInitialized();
-      _device = _gateway.getDevice(deviceId);
       _attachStreams();
-      await _device!.connect();
+      _device = await _gateway.connectToDevice(deviceId);
       _status = DeviceSessionStatus.connected;
       _errorMessage = null;
       _updateDeviceSnapshot();
@@ -82,7 +81,7 @@ class DeviceSessionController extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      await _device!.connect();
+      _device = await _gateway.connectToDevice(deviceId);
       _status = DeviceSessionStatus.connected;
       _updateDeviceSnapshot();
     } catch (e) {
@@ -98,7 +97,7 @@ class DeviceSessionController extends ChangeNotifier {
     _status = DeviceSessionStatus.disconnecting;
     notifyListeners();
     try {
-      await _device!.disconnect();
+      await _gateway.disconnect();
       _status = DeviceSessionStatus.disconnected;
       _lastDisconnectReason = _device!.disconnectReason;
     } catch (e) {
