@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:tim/tim.dart';
 
 import '../../../core/services/tim_gateway.dart';
+import '../../../core/models/waveform.dart';
 
 enum DeviceSessionStatus {
   idle,
@@ -46,6 +47,20 @@ class DeviceSessionController extends ChangeNotifier {
 
   final List<String> _logs = <String>[];
   List<String> get logs => List.unmodifiable(_logs);
+
+  // 波形数据相关
+  WaveformData? _currentWaveform;
+  WaveformData? get currentWaveform => _currentWaveform;
+
+  PlaybackState _waveformPlaybackState = PlaybackState.idle;
+  PlaybackState get waveformPlaybackState => _waveformPlaybackState;
+
+  double _waveformProgress = 0.0;
+  double get waveformProgress => _waveformProgress;
+
+  Timer? _waveformTimer;
+  int _waveformStartTime = 0;
+  int _waveformPausedPosition = 0;
 
   StreamSubscription<bool>? _connectionSub;
   StreamSubscription<int>? _batterySub;
@@ -135,6 +150,83 @@ class DeviceSessionController extends ChangeNotifier {
     }
   }
 
+  // 波形数据相关方法
+  void importWaveform(WaveformData waveform) {
+    _currentWaveform = waveform;
+    stopWaveformPlayback();
+    notifyListeners();
+  }
+
+  void playWaveform() {
+    if (_currentWaveform == null || _device == null || !_device!.isConnected) return;
+
+    _waveformPlaybackState = PlaybackState.playing;
+    _waveformStartTime = DateTime.now().millisecondsSinceEpoch - _waveformPausedPosition;
+
+    _waveformTimer?.cancel();
+    _waveformTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final elapsed = now - _waveformStartTime;
+
+      if (elapsed >= _currentWaveform!.totalDuration) {
+        stopWaveformPlayback();
+        return;
+      }
+
+      _waveformProgress = elapsed / _currentWaveform!.totalDuration;
+
+      // 计算当前强度并发送到设备
+      final intensity = _getCurrentWaveformIntensity();
+      playMotor(intensity);
+
+      notifyListeners();
+    });
+
+    notifyListeners();
+  }
+
+  void pauseWaveformPlayback() {
+    if (_waveformPlaybackState != PlaybackState.playing) return;
+
+    _waveformPlaybackState = PlaybackState.paused;
+    _waveformPausedPosition = DateTime.now().millisecondsSinceEpoch - _waveformStartTime;
+    _waveformTimer?.cancel();
+    notifyListeners();
+  }
+
+  void stopWaveformPlayback() {
+    _waveformPlaybackState = PlaybackState.idle;
+    _waveformProgress = 0.0;
+    _waveformPausedPosition = 0;
+    _waveformTimer?.cancel();
+    stopMotor();
+    notifyListeners();
+  }
+
+  void seekWaveform(double position) {
+    _waveformProgress = position.clamp(0.0, 1.0);
+    _waveformPausedPosition = (_currentWaveform!.totalDuration * _waveformProgress).round();
+    notifyListeners();
+  }
+
+  double _getCurrentWaveformIntensity() {
+    if (_currentWaveform == null || _currentWaveform!.segments.isEmpty) return 0.0;
+
+    final currentTimeMs = (_currentWaveform!.totalDuration * _waveformProgress).round();
+    int accumulatedTime = 0;
+
+    for (final segment in _currentWaveform!.segments) {
+      if (currentTimeMs <= accumulatedTime + segment.duration) {
+        final segmentProgress = (currentTimeMs - accumulatedTime) / segment.duration;
+        final transformedProgress = transformWaveShape(segmentProgress, segment.shape);
+        return segment.startIntensity + (segment.endIntensity - segment.startIntensity) * transformedProgress;
+      }
+      accumulatedTime += segment.duration;
+    }
+
+    return _currentWaveform!.segments.last.endIntensity;
+  }
+
   void _attachStreams() {
     final device = _device;
     if (device == null) return;
@@ -189,6 +281,7 @@ class DeviceSessionController extends ChangeNotifier {
     _batterySub?.cancel();
     _rssiSub?.cancel();
     _logSub?.cancel();
+    _waveformTimer?.cancel();
     super.dispose();
   }
 }

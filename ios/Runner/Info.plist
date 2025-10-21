@@ -49,5 +49,7 @@
 	<string>此应用需要蓝牙权限来连接和控制设备</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>此应用需要蓝牙权限来连接和控制设备</string>
+	<key>NSCameraUsageDescription</key>
+	<string>此应用需要相机权限来扫描二维码</string>
 </dict>
 </plist>

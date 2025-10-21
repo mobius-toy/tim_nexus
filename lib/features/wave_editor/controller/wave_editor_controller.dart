@@ -15,7 +15,6 @@ class WaveEditorController extends ChangeNotifier {
   String? _errorMessage;
   bool _useFallback = false;
   bool _useEmbedded = false;
-  bool _jsChannelSetup = false;
 
   // Getters
   WebViewController? get controller => _controller;
@@ -23,7 +22,6 @@ class WaveEditorController extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get useFallback => _useFallback;
   bool get useEmbedded => _useEmbedded;
-  bool get jsChannelSetup => _jsChannelSetup;
 
   void initializeWebView() {
     _controller = WebViewController()
@@ -120,41 +118,12 @@ class WaveEditorController extends ChangeNotifier {
     }
   }
 
-  void _setupJavaScriptChannels() async {
-    // 防止重复注册 JavaScript 通道
-    if (_jsChannelSetup) {
-      print('JavaScript Channel 已设置，跳过重复注册');
-      return;
-    }
-
-    try {
-      // 添加 JavaScript 通道用于与 Web 页面通信
-      await _controller?.addJavaScriptChannel(
-        'TimRhythmBridge',
-        onMessageReceived: (JavaScriptMessage message) {
-          print('收到 JavaScript Channel 消息: ${message.message}');
-          _handleWebMessage(message.message);
-        },
-      );
-
-      _jsChannelSetup = true;
-      print('JavaScript Channel 注册成功: TimRhythmBridge');
-    } catch (e) {
-      print('JavaScript Channel 注册失败: $e');
-      // 如果注册失败，重置标志以便重试
-      _jsChannelSetup = false;
-    }
-  }
-
   Future<void> _handleWebMessage(String message) async {
     print('receive web message: $message');
     try {
       final data = jsonDecode(message);
       final method = data['method'] as String;
       final params = data['params'] as Map<String, dynamic>? ?? {};
-      final messageId = data['messageId'] as String;
-
-      Map<String, dynamic> result = {};
 
       switch (method) {
         case 'vibrate':
@@ -162,16 +131,13 @@ class WaveEditorController extends ChangeNotifier {
           if (intensity > 0) {
             // 发送震动数据
             await gateway.sendWaveform([(intensity * 100).toInt()]);
-            result = {'success': true};
           } else {
             // 停止震动
             await gateway.stopPlayback();
-            result = {'success': true};
           }
           break;
 
         default:
-          result = {'error': 'Unknown method: $method'};
       }
     } catch (e) {
       // 发送错误响应

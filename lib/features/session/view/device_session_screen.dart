@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:tim/tim.dart';
 
 import '../../../core/services/tim_gateway.dart';
+import '../../../core/models/waveform.dart';
 import '../../../shared/widgets/ambient_background.dart';
-import '../../wave_editor/view/wave_editor_screen.dart';
+import '../../qr_scanner/view/qr_scanner_fullscreen_modal.dart';
+import '../../waveform_preview/view/waveform_preview_widget.dart';
 import '../controller/device_session_controller.dart';
 
 class DeviceSessionArguments {
@@ -25,16 +27,6 @@ class DeviceSessionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('设备详情'),
-        actions: [
-          IconButton(
-            tooltip: '波形工作台',
-            icon: const Icon(Icons.waves),
-            onPressed: () => Navigator.of(context).pushNamed(
-              WaveEditorScreen.routeName,
-              arguments: deviceId,
-            ),
-          ),
-        ],
       ),
       body: deviceId == null
           ? const _MissingDeviceView()
@@ -56,7 +48,6 @@ class _DeviceSessionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = context.watch<DeviceSessionController>();
     final device = controller.device;
-    final textTheme = Theme.of(context).textTheme;
 
     return AmbientBackground(
       child: SafeArea(
@@ -72,41 +63,11 @@ class _DeviceSessionView extends StatelessWidget {
                 const SizedBox(height: 16),
                 _MotorControlCard(controller: controller),
                 const SizedBox(height: 16),
+                _QRScannerCard(controller: controller),
+                const SizedBox(height: 16),
+                _WaveformPreviewCard(controller: controller),
+                const SizedBox(height: 16),
               ],
-              SizedBox(
-                height: 300, // 固定日志区域高度
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('实时日志', style: textTheme.titleLarge),
-                        const SizedBox(height: 12),
-                        Expanded(
-                          child: controller.logs.isEmpty
-                              ? const Center(
-                                  child: Text('暂无日志', style: TextStyle(color: Colors.white54)),
-                                )
-                              : ListView.builder(
-                                  reverse: true,
-                                  itemCount: controller.logs.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 4),
-                                      child: Text(
-                                        controller.logs[index],
-                                        style: textTheme.bodySmall?.copyWith(fontFamily: 'monospace'),
-                                      ),
-                                    );
-                                  },
-                                ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -363,6 +324,222 @@ class _StatusChip extends StatelessWidget {
         border: Border.all(color: _color.withValues(alpha: 0.5)),
       ),
       child: Text(_label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white)),
+    );
+  }
+}
+
+class _QRScannerCard extends StatefulWidget {
+  const _QRScannerCard({required this.controller});
+
+  final DeviceSessionController controller;
+
+  @override
+  State<_QRScannerCard> createState() => _QRScannerCardState();
+}
+
+class _QRScannerCardState extends State<_QRScannerCard> {
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final isConnected = widget.controller.status == DeviceSessionStatus.connected;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('二维码扫描', style: textTheme.titleLarge),
+                Text(
+                  isConnected ? '扫描波形数据' : '连接后可用',
+                  style: textTheme.bodySmall?.copyWith(color: Colors.white54),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            if (isConnected) ...[
+              // 二维码扫描按钮
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final navigator = Navigator.of(context);
+                    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+                    final result = await navigator.push(
+                      MaterialPageRoute(
+                        builder: (context) => QRScannerFullScreenModal(),
+                      ),
+                    );
+
+                    if (result != null && result is WaveformData && mounted) {
+                      widget.controller.importWaveform(result);
+                      scaffoldMessenger.showSnackBar(
+                        SnackBar(
+                          content: Text('已导入波形数据: ${result.segments.length} 个波形段'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.qr_code_scanner),
+                  label: const Text('扫描二维码导入波形数据'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.cyan.withValues(alpha: 0.2),
+                    foregroundColor: Colors.cyan,
+                  ),
+                ),
+              ),
+            ] else ...[
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.qr_code_scanner_outlined,
+                        size: 48,
+                        color: Colors.white.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        '请先连接设备',
+                        style: textTheme.bodyLarge?.copyWith(color: Colors.white54),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WaveformPreviewCard extends StatelessWidget {
+  const _WaveformPreviewCard({required this.controller});
+
+  final DeviceSessionController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final isConnected = controller.status == DeviceSessionStatus.connected;
+    final waveform = controller.currentWaveform;
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('波形预览', style: textTheme.titleLarge),
+                if (waveform != null)
+                  Text(
+                    '${waveform.segments.length} 个波形段',
+                    style: textTheme.bodySmall?.copyWith(color: Colors.white54),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            if (waveform != null) ...[
+              // 波形预览区域
+              WaveformPreviewWidget(
+                segments: waveform.segments,
+                totalDuration: waveform.totalDuration,
+                height: 200,
+                onIntensityChanged: (intensity) {
+                  // 实时更新马达强度（仅在播放时）
+                  if (controller.waveformPlaybackState == PlaybackState.playing) {
+                    controller.playMotor(intensity);
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              // 播放控制按钮
+              Row(
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: isConnected && controller.waveformPlaybackState != PlaybackState.playing
+                        ? () => controller.playWaveform()
+                        : null,
+                    icon: const Icon(Icons.play_arrow),
+                    label: const Text('播放'),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: controller.waveformPlaybackState == PlaybackState.playing
+                        ? () => controller.pauseWaveformPlayback()
+                        : null,
+                    icon: const Icon(Icons.pause),
+                    label: const Text('暂停'),
+                  ),
+                  const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: controller.waveformPlaybackState != PlaybackState.idle
+                        ? () => controller.stopWaveformPlayback()
+                        : null,
+                    icon: const Icon(Icons.stop),
+                    label: const Text('停止'),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${(waveform.totalDuration / 1000).toStringAsFixed(1)}s',
+                    style: textTheme.bodyMedium?.copyWith(color: Colors.white54),
+                  ),
+                ],
+              ),
+            ] else ...[
+              // 空状态提示
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.waves,
+                        size: 48,
+                        color: Colors.white.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        '请先扫描二维码导入波形数据',
+                        style: textTheme.bodyLarge?.copyWith(color: Colors.white54),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '请使用上方的扫描按钮导入波形数据',
+                        style: textTheme.bodyMedium?.copyWith(color: Colors.white38),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }
