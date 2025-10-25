@@ -25,11 +25,9 @@ class AppTheme {
       primary: _primary,
       secondary: _secondary,
       surface: _card,
-      background: _background,
       onPrimary: _primaryForeground,
       onSecondary: _secondaryForeground,
       onSurface: _cardForeground,
-      onBackground: _foreground,
       error: _destructive,
     );
 
@@ -84,14 +82,13 @@ class AppTheme {
       colorScheme: colorScheme,
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: _card,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
         titleTextStyle: textTheme.titleLarge?.copyWith(color: _foreground),
         centerTitle: false,
         foregroundColor: _foreground,
-        surfaceTintColor: Colors.transparent,
       ),
-      cardTheme: CardThemeData(
+      cardTheme: CardTheme(
         color: _card,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 0,
@@ -122,7 +119,6 @@ class AppTheme {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           foregroundColor: _accentForeground,
-          backgroundColor: _accent,
           elevation: 0,
           surfaceTintColor: Colors.transparent,
           textStyle: const TextStyle(
@@ -165,14 +161,14 @@ class AppTheme {
         tileColor: Colors.transparent,
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return _foreground;
           }
           return _mutedForeground;
         }),
-        trackColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return _accent;
           }
           return _secondary;
@@ -184,8 +180,7 @@ class AppTheme {
         textStyle: TextStyle(color: _foreground),
       ),
       // 添加 dialog 主题配置
-      dialogTheme: const DialogThemeData(
-        backgroundColor: _card,
+      dialogTheme: const DialogTheme(
         titleTextStyle: TextStyle(
           color: _foreground,
           fontSize: 20,
@@ -198,7 +193,6 @@ class AppTheme {
       ),
       // 添加 bottom sheet 主题配置
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: _card,
         modalBackgroundColor: _card,
       ),
     );
