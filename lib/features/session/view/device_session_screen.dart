@@ -8,6 +8,7 @@ import '../../../shared/widgets/ambient_background.dart';
 import '../../qr_scanner/view/qr_scanner_fullscreen_modal.dart';
 import '../../waveform_preview/view/waveform_preview_widget.dart';
 import '../controller/device_session_controller.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class DeviceSessionArguments {
   const DeviceSessionArguments({required this.deviceId});
@@ -264,7 +265,7 @@ class _MetricBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.06), borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(color: Colors.white.withAlphaCompat(0.06), borderRadius: BorderRadius.circular(16)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -320,8 +321,8 @@ class _StatusChip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: _color.withValues(alpha: 0.16),
-        border: Border.all(color: _color.withValues(alpha: 0.5)),
+        color: _color.withAlphaCompat(0.16),
+        border: Border.all(color: _color.withAlphaCompat(0.5)),
       ),
       child: Text(_label, style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white)),
     );
@@ -389,7 +390,7 @@ class _QRScannerCardState extends State<_QRScannerCard> {
                   label: const Text('扫描二维码导入波形数据'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Colors.cyan.withValues(alpha: 0.2),
+                    backgroundColor: Colors.cyan.withAlphaCompat(0.2),
                     foregroundColor: Colors.cyan,
                   ),
                 ),
@@ -398,9 +399,9 @@ class _QRScannerCardState extends State<_QRScannerCard> {
               Container(
                 height: 250,
                 decoration: BoxDecoration(
-                  color: Colors.grey.withValues(alpha: 0.1),
+                  color: Colors.grey.withAlphaCompat(0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                  border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
                 ),
                 child: Center(
                   child: Column(
@@ -409,7 +410,7 @@ class _QRScannerCardState extends State<_QRScannerCard> {
                       Icon(
                         Icons.qr_code_scanner_outlined,
                         size: 48,
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: Colors.white.withAlphaCompat(0.5),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -509,9 +510,9 @@ class _WaveformPreviewCard extends StatelessWidget {
               Container(
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.grey.withValues(alpha: 0.1),
+                  color: Colors.grey.withAlphaCompat(0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                  border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
                 ),
                 child: Center(
                   child: Column(
@@ -520,7 +521,7 @@ class _WaveformPreviewCard extends StatelessWidget {
                       Icon(
                         Icons.waves,
                         size: 48,
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: Colors.white.withAlphaCompat(0.5),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -555,7 +556,7 @@ class _MissingDeviceView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.device_unknown, size: 64, color: Colors.white.withValues(alpha: 0.5)),
+            Icon(Icons.device_unknown, size: 64, color: Colors.white.withAlphaCompat(0.5)),
             const SizedBox(height: 16),
             Text('未指定设备', style: textTheme.titleLarge),
             const SizedBox(height: 8),

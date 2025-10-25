@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import device_info_plus
-import flutter_blue_plus_darwin
+import flutter_blue_plus
 import mobile_scanner
 import tim
 import webview_flutter_wkwebview

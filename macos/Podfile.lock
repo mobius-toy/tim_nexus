@@ -1,11 +1,12 @@
 PODS:
   - device_info_plus (0.0.1):
     - FlutterMacOS
-  - flutter_blue_plus_darwin (0.0.2):
-    - Flutter
+  - flutter_blue_plus (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
-  - tim (0.0.2):
+  - mobile_scanner (5.2.3):
+    - FlutterMacOS
+  - tim (0.0.3):
     - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
@@ -13,18 +14,21 @@ PODS:
 
 DEPENDENCIES:
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
-  - flutter_blue_plus_darwin (from `Flutter/ephemeral/.symlinks/plugins/flutter_blue_plus_darwin/darwin`)
+  - flutter_blue_plus (from `Flutter/ephemeral/.symlinks/plugins/flutter_blue_plus/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - mobile_scanner (from `Flutter/ephemeral/.symlinks/plugins/mobile_scanner/macos`)
   - tim (from `Flutter/ephemeral/.symlinks/plugins/tim/macos`)
   - webview_flutter_wkwebview (from `Flutter/ephemeral/.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 EXTERNAL SOURCES:
   device_info_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
-  flutter_blue_plus_darwin:
-    :path: Flutter/ephemeral/.symlinks/plugins/flutter_blue_plus_darwin/darwin
+  flutter_blue_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_blue_plus/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  mobile_scanner:
+    :path: Flutter/ephemeral/.symlinks/plugins/mobile_scanner/macos
   tim:
     :path: Flutter/ephemeral/.symlinks/plugins/tim/macos
   webview_flutter_wkwebview:
@@ -32,10 +36,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   device_info_plus: a56e6e74dbbd2bb92f2da12c64ddd4f67a749041
-  flutter_blue_plus_darwin: 20a08bfeaa0f7804d524858d3d8744bcc1b6dbc3
-  FlutterMacOS: d0db08ddef1a9af05a5ec4b724367152bb0500b1
-  tim: 37f5f8a01e70b096eedd466be1e5416b7e1df7c4
-  webview_flutter_wkwebview: 8ebf4fded22593026f7dbff1fbff31ea98573c8d
+  flutter_blue_plus: dfaef8c6b52955205b65e6ea88659c68570dd563
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  mobile_scanner: bd1e7cd9b67b442f4d903747f4778e040513f860
+  tim: 7aafcddbd6283e02aca7cec094c35cc1c35ee095
+  webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
 PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
 

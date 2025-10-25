@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../core/permissions/permission_coordinator.dart';
 import '../../../core/routing/app_router.dart';
 import '../../../shared/widgets/ambient_background.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -42,7 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _showPermissionSheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.black.withValues(alpha: 0.85),
+      backgroundColor: Colors.black.withAlphaCompat(0.85),
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (context) {
         final statuses = context.watch<PermissionCoordinator>().statuses;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../controller/waveform_preview_controller.dart';
 import '../../../core/models/waveform.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class WaveformPreviewWidget extends StatefulWidget {
   const WaveformPreviewWidget({
@@ -62,7 +63,7 @@ class _WaveformPreviewWidgetState extends State<WaveformPreviewWidget> {
             height: widget.height,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+              border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -86,7 +87,7 @@ class _WaveformPreviewWidgetState extends State<WaveformPreviewWidget> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: 0.3),
+                        color: Colors.black.withAlphaCompat(0.3),
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(12),
                           bottomRight: Radius.circular(12),
@@ -117,7 +118,7 @@ class _WaveformPreviewWidgetState extends State<WaveformPreviewWidget> {
                               value: controller.currentPosition,
                               onChanged: (value) => controller.seek(value),
                               activeColor: Colors.cyan,
-                              inactiveColor: Colors.white.withValues(alpha: 0.3),
+                              inactiveColor: Colors.white.withAlphaCompat(0.3),
                             ),
                           ),
 
@@ -176,7 +177,7 @@ class WaveformPainter extends CustomPainter {
 
   void _drawGrid(Canvas canvas, Size size, double padding) {
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
+      ..color = Colors.white.withAlphaCompat(0.1)
       ..strokeWidth = 0.5;
 
     // 水平网格线
@@ -206,7 +207,7 @@ class WaveformPainter extends CustomPainter {
 
     // 绘制波形填充区域
     final fillPaint = Paint()
-      ..color = Colors.cyan.withValues(alpha: 0.3)
+      ..color = Colors.cyan.withAlphaCompat(0.3)
       ..style = PaintingStyle.fill;
 
     final path = Path();

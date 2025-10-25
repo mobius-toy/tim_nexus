@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../controller/qr_scanner_controller.dart';
 import '../../../core/models/waveform.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class QRScannerWidget extends StatefulWidget {
   const QRScannerWidget({
@@ -37,7 +38,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
             height: widget.height,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+              border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -61,8 +62,8 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: scannerController.isScanning
-                            ? Colors.green.withValues(alpha: 0.8)
-                            : Colors.red.withValues(alpha: 0.8),
+                            ? Colors.green.withAlphaCompat(0.8)
+                            : Colors.red.withAlphaCompat(0.8),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
@@ -172,7 +173,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.red.withValues(alpha: 0.9),
+                          color: Colors.red.withAlphaCompat(0.9),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -205,7 +206,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.green.withValues(alpha: 0.9),
+                          color: Colors.green.withAlphaCompat(0.9),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -262,8 +263,8 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                                   scannerController.startScanning();
                                 },
                           backgroundColor: scannerController.isScanning
-                              ? Colors.red.withValues(alpha: 0.8)
-                              : Colors.green.withValues(alpha: 0.8),
+                              ? Colors.red.withAlphaCompat(0.8)
+                              : Colors.green.withAlphaCompat(0.8),
                           child: Icon(
                             scannerController.isScanning ? Icons.stop : Icons.play_arrow,
                             color: Colors.white,
@@ -272,7 +273,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                         const SizedBox(width: 8),
                         FloatingActionButton.small(
                           onPressed: () => scannerController.reset(),
-                          backgroundColor: Colors.blue.withValues(alpha: 0.8),
+                          backgroundColor: Colors.blue.withAlphaCompat(0.8),
                           child: const Icon(Icons.refresh, color: Colors.white),
                         ),
                       ],

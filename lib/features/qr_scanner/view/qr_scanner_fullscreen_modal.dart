@@ -4,6 +4,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../controller/qr_scanner_controller.dart';
 import '../../../core/models/waveform.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class QRScannerFullScreenModal extends StatefulWidget {
   const QRScannerFullScreenModal({
@@ -250,7 +251,7 @@ class _QRScannerFullScreenModalState extends State<QRScannerFullScreenModal> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black.withValues(alpha: 0.8),
+                        Colors.black.withAlphaCompat(0.8),
                         Colors.transparent,
                       ],
                     ),
@@ -366,7 +367,7 @@ class _QRScannerFullScreenModalState extends State<QRScannerFullScreenModal> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.green.withValues(alpha: 0.8),
+                    color: Colors.green.withAlphaCompat(0.8),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -400,7 +401,7 @@ class _QRScannerFullScreenModalState extends State<QRScannerFullScreenModal> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.9),
+                      color: Colors.red.withAlphaCompat(0.9),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -433,7 +434,7 @@ class _QRScannerFullScreenModalState extends State<QRScannerFullScreenModal> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.9),
+                      color: Colors.green.withAlphaCompat(0.9),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -482,7 +483,7 @@ class _QRScannerFullScreenModalState extends State<QRScannerFullScreenModal> {
                 right: 24,
                 child: FloatingActionButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  backgroundColor: Colors.black.withValues(alpha: 0.7),
+                  backgroundColor: Colors.black.withAlphaCompat(0.7),
                   child: const Icon(Icons.close, color: Colors.white),
                 ),
               ),

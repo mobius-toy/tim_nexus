@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/color_adapter.dart';
 
 class AmbientBackground extends StatelessWidget {
   const AmbientBackground({
@@ -23,7 +24,7 @@ class AmbientBackground extends StatelessWidget {
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.55),
+                color: Colors.black.withAlphaCompat(0.55),
               ),
             ),
           ),

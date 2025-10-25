@@ -7,6 +7,7 @@ import '../../../core/services/tim_gateway.dart';
 import '../../../shared/widgets/ambient_background.dart';
 import '../../session/view/device_session_screen.dart';
 import '../controller/scanner_controller.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class ScannerScreen extends StatelessWidget {
   const ScannerScreen({super.key});
@@ -170,7 +171,7 @@ class _EmptyPlaceholder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.sensors, color: Colors.white.withValues(alpha: 0.6), size: 54),
+          Icon(Icons.sensors, color: Colors.white.withAlphaCompat(0.6), size: 54),
           const SizedBox(height: 12),
           Text(
             isScanning ? '正在搜寻附近的 TIM 设备...' : '点击“开始扫描”寻找设备',
@@ -209,7 +210,7 @@ class _DeviceCard extends StatelessWidget {
               Color(0x1100F5C3),
             ],
           ),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+          border: Border.all(color: Colors.white.withAlphaCompat(0.08)),
         ),
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -263,7 +264,7 @@ class _Badge extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.white.withValues(alpha: 0.08),
+        color: Colors.white.withAlphaCompat(0.08),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

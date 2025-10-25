@@ -4,6 +4,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../controller/qr_scanner_controller.dart';
 import '../../../core/models/waveform.dart';
+import '../../../core/utils/color_adapter.dart';
 
 class QRScannerModal extends StatefulWidget {
   const QRScannerModal({
@@ -67,7 +68,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
           ),
           child: const Center(
             child: Column(
@@ -95,7 +96,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -168,7 +169,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+                border: Border.all(color: Colors.white.withAlphaCompat(0.2)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
@@ -182,7 +183,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.8),
+                          color: Colors.black.withAlphaCompat(0.8),
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(16),
                             topRight: Radius.circular(16),
@@ -319,8 +320,8 @@ class _QRScannerModalState extends State<QRScannerModal> {
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
                                 color: scannerController.isScanning
-                                    ? Colors.green.withValues(alpha: 0.8)
-                                    : Colors.red.withValues(alpha: 0.8),
+                                    ? Colors.green.withAlphaCompat(0.8)
+                                    : Colors.red.withAlphaCompat(0.8),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Row(
@@ -356,7 +357,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: Colors.red.withValues(alpha: 0.9),
+                                  color: Colors.red.withAlphaCompat(0.9),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Row(
@@ -389,7 +390,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
                               child: Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withValues(alpha: 0.9),
+                                  color: Colors.green.withAlphaCompat(0.9),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Row(
@@ -443,7 +444,7 @@ class _QRScannerModalState extends State<QRScannerModal> {
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.8),
+                          color: Colors.black.withAlphaCompat(0.8),
                           borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(16),
                             bottomRight: Radius.circular(16),
@@ -458,8 +459,8 @@ class _QRScannerModalState extends State<QRScannerModal> {
                                   ? () => scannerController.stopScanning()
                                   : () => scannerController.startScanning(),
                               backgroundColor: scannerController.isScanning
-                                  ? Colors.red.withValues(alpha: 0.8)
-                                  : Colors.green.withValues(alpha: 0.8),
+                                  ? Colors.red.withAlphaCompat(0.8)
+                                  : Colors.green.withAlphaCompat(0.8),
                               child: Icon(
                                 scannerController.isScanning ? Icons.stop : Icons.play_arrow,
                                 color: Colors.white,
@@ -469,14 +470,14 @@ class _QRScannerModalState extends State<QRScannerModal> {
                             // 重置按钮
                             FloatingActionButton(
                               onPressed: () => scannerController.reset(),
-                              backgroundColor: Colors.blue.withValues(alpha: 0.8),
+                              backgroundColor: Colors.blue.withAlphaCompat(0.8),
                               child: const Icon(Icons.refresh, color: Colors.white),
                             ),
 
                             // 关闭按钮
                             FloatingActionButton(
                               onPressed: () => Navigator.of(context).pop(),
-                              backgroundColor: Colors.grey.withValues(alpha: 0.8),
+                              backgroundColor: Colors.grey.withAlphaCompat(0.8),
                               child: const Icon(Icons.close, color: Colors.white),
                             ),
                           ],
