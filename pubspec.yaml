@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.1+1
+version: 1.0.2+1
 
 environment:
   sdk: ^3.5.1
@@ -37,12 +37,11 @@ dependencies:
   device_info_plus: ^10.1.0
   collection: ^1.18.0
   intl: ^0.19.0
-  webview_flutter: ^4.4.2
   mobile_scanner: ^5.0.0
   tim:
     git:
       url: https://github.com/mobius-toy/tim.git
-      ref: v0.0.5
+      ref: v0.0.6
 
 dev_dependencies:
   flutter_test:
@@ -62,22 +61,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   uses-material-design: true
-
-  assets:
-    # Next.js 静态导出产物 - 自动生成配置
-    - assets/rhythm/
-    - assets/rhythm/_next/static/
-    - assets/rhythm/_next/static/c1D_yJDg6QJal2swcDv1j/
-    - assets/rhythm/_next/static/chunks/
-    - assets/rhythm/_next/static/media/
-    - assets/rhythm/404.html
-    - assets/rhythm/favicon.ico
-    - assets/rhythm/file.svg
-    - assets/rhythm/globe.svg
-    - assets/rhythm/index.txt
-    - assets/rhythm/next.svg
-    - assets/rhythm/vercel.svg
-    - assets/rhythm/window.svg
+    
 # Flutter Launcher Icons 配置
 flutter_launcher_icons:
   android: true

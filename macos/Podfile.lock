@@ -8,9 +8,6 @@ PODS:
     - FlutterMacOS
   - tim (0.0.3):
     - FlutterMacOS
-  - webview_flutter_wkwebview (0.0.1):
-    - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
   - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
@@ -18,7 +15,6 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - mobile_scanner (from `Flutter/ephemeral/.symlinks/plugins/mobile_scanner/macos`)
   - tim (from `Flutter/ephemeral/.symlinks/plugins/tim/macos`)
-  - webview_flutter_wkwebview (from `Flutter/ephemeral/.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -31,8 +27,6 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/mobile_scanner/macos
   tim:
     :path: Flutter/ephemeral/.symlinks/plugins/tim/macos
-  webview_flutter_wkwebview:
-    :path: Flutter/ephemeral/.symlinks/plugins/webview_flutter_wkwebview/darwin
 
 SPEC CHECKSUMS:
   device_info_plus: a56e6e74dbbd2bb92f2da12c64ddd4f67a749041
@@ -40,7 +34,6 @@ SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   mobile_scanner: bd1e7cd9b67b442f4d903747f4778e040513f860
   tim: 7aafcddbd6283e02aca7cec094c35cc1c35ee095
-  webview_flutter_wkwebview: 1821ceac936eba6f7984d89a9f3bcb4dea99ebb2
 
 PODFILE CHECKSUM: 54d867c82ac51cbd61b565781b9fada492027009
 
