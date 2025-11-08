@@ -215,6 +215,44 @@ class _MotorControlCard extends StatelessWidget {
               divisions: 20,
               label: '${(controller.motorIntensity * 100).round()}%',
             ),
+            const SizedBox(height: 16),
+            // 预设百分比波形按钮
+            Text('预设强度', style: textTheme.titleSmall?.copyWith(color: Colors.white70)),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _PresetButton(
+                  label: '25%',
+                  intensity: 0.25,
+                  isActive: (controller.motorIntensity - 0.25).abs() < 0.01,
+                  isConnected: isConnected,
+                  onPressed: () => controller.playMotor(0.25),
+                ),
+                _PresetButton(
+                  label: '50%',
+                  intensity: 0.50,
+                  isActive: (controller.motorIntensity - 0.50).abs() < 0.01,
+                  isConnected: isConnected,
+                  onPressed: () => controller.playMotor(0.50),
+                ),
+                _PresetButton(
+                  label: '75%',
+                  intensity: 0.75,
+                  isActive: (controller.motorIntensity - 0.75).abs() < 0.01,
+                  isConnected: isConnected,
+                  onPressed: () => controller.playMotor(0.75),
+                ),
+                _PresetButton(
+                  label: '100%',
+                  intensity: 1.0,
+                  isActive: (controller.motorIntensity - 1.0).abs() < 0.01,
+                  isConnected: isConnected,
+                  onPressed: () => controller.playMotor(1.0),
+                ),
+              ],
+            ),
             const SizedBox(height: 12),
             Row(
               children: [
@@ -226,6 +264,46 @@ class _MotorControlCard extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PresetButton extends StatelessWidget {
+  const _PresetButton({
+    required this.label,
+    required this.intensity,
+    required this.isActive,
+    required this.isConnected,
+    required this.onPressed,
+  });
+
+  final String label;
+  final double intensity;
+  final bool isActive;
+  final bool isConnected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return OutlinedButton(
+      onPressed: isConnected ? onPressed : null,
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        side: BorderSide(
+          color: isActive && isConnected ? Colors.cyan : Colors.white.withAlphaCompat(0.3),
+          width: isActive && isConnected ? 2 : 1,
+        ),
+        backgroundColor: isActive && isConnected ? Colors.cyan.withAlphaCompat(0.1) : Colors.transparent,
+        foregroundColor: isActive && isConnected ? Colors.cyan : Colors.white70,
+      ),
+      child: Text(
+        label,
+        style: textTheme.labelLarge?.copyWith(
+          fontWeight: isActive && isConnected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
     );
