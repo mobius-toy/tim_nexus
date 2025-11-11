@@ -51,5 +51,11 @@
 	<string>此应用需要蓝牙权限来连接和控制设备</string>
 	<key>NSCameraUsageDescription</key>
 	<string>此应用需要相机权限来扫描二维码</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>此应用需要访问本地网络以发现和连接设备</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+	</array>
 </dict>
 </plist>

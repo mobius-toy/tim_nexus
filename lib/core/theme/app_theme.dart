@@ -88,7 +88,7 @@ class AppTheme {
         centerTitle: false,
         foregroundColor: _foreground,
       ),
-      cardTheme: CardThemeData(
+      cardTheme: CardTheme(
         color: _card,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 0,
@@ -180,7 +180,7 @@ class AppTheme {
         textStyle: TextStyle(color: _foreground),
       ),
       // 添加 dialog 主题配置
-      dialogTheme: const DialogThemeData(
+      dialogTheme: const DialogTheme(
         titleTextStyle: TextStyle(
           color: _foreground,
           fontSize: 20,

@@ -117,7 +117,7 @@ SPEC CHECKSUMS:
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  tim: 30d9c31b3fc838e5cbdfb15eae7698ef2ecb2798
+  tim: b249bac99c01e69a8ea4843842e433dc027cfc21
 
 PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
 
